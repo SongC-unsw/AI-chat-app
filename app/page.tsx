@@ -5,6 +5,10 @@ import { useState } from "react";
 const page = () => {
   const [input, setInput] = useState("");
   const [model, setModel] = useState("deepseek-v3");
+
+  const handleModelChange = () => {
+    setModel(model === "deepseek-v3" ? "deepseek-r1" : "deepseek-v3");
+  };
   return (
     <div className="flex flex-col items-center min-h-screen">
       <div className="h-[20vh]"></div>
@@ -21,6 +25,7 @@ const page = () => {
           <div className="flex items-center justify-between w-full h-12 mb-2">
             <div>
               <div
+                onClick={handleModelChange}
                 className={`flex items-center justify-center rounded-lg border-[1px] px-2 py-1 ml-2 cursor-pointer ${
                   model === "deepseek-r1"
                     ? "border-blue-300 bg-blue-200"
