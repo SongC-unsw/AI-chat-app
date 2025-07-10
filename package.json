@@ -11,6 +11,7 @@
   "dependencies": {
     "@ai-sdk/deepseek": "^0.2.15",
     "@clerk/nextjs": "^6.24.0",
+    "@opentelemetry/api": "^1.9.0",
     "ai": "^4.3.17",
     "lucide-react": "^0.525.0",
     "next": "15.3.5",
