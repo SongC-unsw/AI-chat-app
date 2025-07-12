@@ -1,13 +1,43 @@
 "use client";
 import { SendIcon } from "lucide-react";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 const page = () => {
   const [input, setInput] = useState("");
   const [model, setModel] = useState("deepseek-v3");
-
+  const router = useRouter();
+  const { user } = useUser();
   const handleModelChange = () => {
     setModel(model === "deepseek-v3" ? "deepseek-r1" : "deepseek-v3");
+  };
+  const queryClient = useQueryClient();
+  const { mutate: createChat } = useMutation({
+    mutationFn: async () => {
+      return await axios.post("api/create-chat", {
+        title: input,
+        model: model,
+      });
+    },
+    onSuccess: (response) => {
+      router.push(`/chat/${response.data.id}`);
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    },
+  });
+
+  const handleSubmit = () => {
+    if (input.trim() === "") {
+      return;
+    }
+    if (!user) {
+      router.push("/sign-in");
+      return;
+    }
+    createChat();
+    setInput("");
   };
   return (
     <div className="flex flex-col items-center min-h-screen">
@@ -36,7 +66,10 @@ const page = () => {
               </div>
             </div>
             {/* 发送按钮 */}
-            <div className="p-2 mr-4 rounded-full shadow-lg bg-black text-white cursor-pointer hover:bg-gray-800">
+            <div
+              onClick={handleSubmit}
+              className="p-2 mr-4 rounded-full shadow-lg bg-black text-white cursor-pointer hover:bg-gray-800"
+            >
               <SendIcon className="w-4 h-4" />
             </div>
           </div>
