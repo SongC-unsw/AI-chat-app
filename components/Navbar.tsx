@@ -40,18 +40,19 @@ const Navbar = () => {
           新建对话
         </p>
       </div>
+      <hr className="border-gray-200 mt-4" />
 
       {/* List of chats */}
       <div className="flex flex-col gap-2 mt-4">
         {chats?.data?.chats?.map((chat: ChatModel) => (
           <div
             key={chat.id}
-            className={`w-full h-10 hover:text-gray-500 cursor-pointer flex items-center px-2 ${
+            className={`w-full h-10 hover:text-gray-500 hover:bg-gray-100 hover:shadow-md rounded-lg cursor-pointer flex items-center px-2 ${
               pathname === `/chat/${chat.id}` ? "font-medium bg-blue-200" : ""
             }`}
             onClick={() => router.push(`/chat/${chat.id}`)}
           >
-            <p className="text-sm line-clamp-1">{chat.title}</p>
+            <p className="text-sm line-clamp-1 px-2">{chat.title}</p>
           </div>
         ))}
       </div>
