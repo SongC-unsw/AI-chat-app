@@ -11,7 +11,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import QueryClientProvider from "@/components/QueryClientProvider";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -39,27 +38,36 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
           >
-            {/* Left sidebar */}
-            <div className="w-1/5 h-screen bg-gray-50 fixed left-0 top-0">
-              <Navbar />
-            </div>
-            {/* Main content area */}
-            <div className="flex-1 ml-[20%]">
-              <header className="flex justify-end items-center p-4 gap-4 h-16 bg-white">
-                <SignedOut>
+            {/* 仅在用户登录时显示导航栏 */}
+            <SignedIn>
+              <div className="w-1/5 h-screen bg-gray-50 fixed left-0 top-0">
+                <Navbar />
+              </div>
+            </SignedIn>
+
+            {/* 主内容区域 - 根据是否登录调整布局 */}
+            <SignedOut>
+              <div className="flex-1">
+                <header className="flex justify-end items-center p-4 gap-4 h-16 bg-white">
                   <SignInButton />
                   <SignUpButton>
                     <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
                       Sign Up
                     </button>
                   </SignUpButton>
-                </SignedOut>
-                <SignedIn>
+                </header>
+                <main className="p-4">{children}</main>
+              </div>
+            </SignedOut>
+
+            <SignedIn>
+              <div className="flex-1 ml-[20%]">
+                <header className="flex justify-end items-center p-4 gap-4 h-16 bg-white">
                   <UserButton />
-                </SignedIn>
-              </header>
-              <main className="p-4">{children}</main>
-            </div>
+                </header>
+                <main className="p-4">{children}</main>
+              </div>
+            </SignedIn>
           </body>
         </html>
       </QueryClientProvider>
