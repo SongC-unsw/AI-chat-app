@@ -3,10 +3,29 @@
 import { SendIcon } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { getChat } from "@/db";
 
 export default function Page() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({});
   const [model, setModel] = useState("deepseek-v3");
+  const { chat_id } = useParams();
+  const { data: chat } = useQuery({
+    queryKey: ["chat", chat_id],
+    queryFn: () => {
+      return axios.post("/api/get-chat", {
+        chat_id: chat_id,
+      });
+    },
+  });
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    body: {
+      model: model,
+      chat_id: chat_id,
+      chat_user_id: chat?.data?.chat?.userId,
+    },
+  });
 
   const handleModelChange = () => {
     setModel(model === "deepseek-v3" ? "deepseek-r1" : "deepseek-v3");

@@ -22,7 +22,12 @@ const Navbar = () => {
   return (
     <div className="h-screen bg-gray-50">
       <div className="flex items-center justify-center mt-4">
-        <p className="font-bold text-2xl">Deepseek</p>
+        <p
+          className="font-bold text-2xl cursor-pointer"
+          onClick={() => router.push("/")}
+        >
+          Deepseek
+        </p>
       </div>
 
       {/* Create new chat */}
