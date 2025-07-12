@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { getChat } from "@/db";
 
 export default function Page() {
   const [model, setModel] = useState("deepseek-v3");
@@ -19,12 +18,24 @@ export default function Page() {
       });
     },
   });
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
+  // get the messages from the database
+  const { data: previousMessages } = useQuery({
+    queryKey: ["messages", chat_id],
+    queryFn: () => {
+      return axios.post("/api/get-messages", {
+        chat_id: chat_id,
+        chat_user_id: chat?.data?.chat?.userId,
+      });
+    },
+    enabled: !!chat?.data?.chat?.id,
+  });
+  const { messages, input, handleInputChange, handleSubmit, append } = useChat({
     body: {
       model: model,
       chat_id: chat_id,
       chat_user_id: chat?.data?.chat?.userId,
     },
+    initialMessages: previousMessages?.data?.messages,
   });
 
   const handleModelChange = () => {
@@ -35,6 +46,27 @@ export default function Page() {
   useEffect(() => {
     endRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const handleFirstMessage = async () => {
+    if (
+      chat?.data?.chat?.title &&
+      previousMessages?.data?.messages.length === 0
+    ) {
+      await append({
+        role: "user",
+        content: chat?.data?.chat?.title,
+      }),
+        {
+          model: model,
+          chat_id: chat_id,
+          chat_user_id: chat?.data?.chat?.userId,
+        };
+    }
+  };
+
+  useEffect(() => {
+    handleFirstMessage();
+  }, [chat?.data?.chat?.title, previousMessages]);
 
   return (
     <div className="flex flex-col items-center h-screen justify-between">
@@ -53,7 +85,7 @@ export default function Page() {
               {/* {message.role === "user" ? "User: " : "AI: "} */}
               <div
                 className={`inline-block p-2 rounded-lg ${
-                  message?.role === "assistant" ? "bg-blue-500" : "bg-slate-100"
+                  message?.role === "assistant" ? "bg-blue-400" : "bg-slate-100"
                 }`}
               >
                 {message?.content}
