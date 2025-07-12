@@ -46,9 +46,11 @@ const Page = () => {
     createChat();
   };
   return (
-    <div className="flex flex-col items-center min-h-screen">
-      <div className="h-[20vh]"></div>
+    <div className="flex flex-col items-center h-full">
+      {/* <div className="h-[20vh]"></div> */}
+
       <div className="w-2/3">
+        <div className="h-[20vh]"></div>
         <p className="text-bold text-2xl text-center">有什么可以帮到你？</p>
         <div className="flex flex-col items-center justify-center mt-4 shadow-lg border-[1px] border-gray-300 h-32 rounded-lg">
           <textarea

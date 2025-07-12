@@ -78,7 +78,10 @@ export default function Page() {
   }, [handleFirstMessage]);
 
   return (
-    <div className="flex flex-col items-center h-screen justify-between">
+    <div
+      className="flex flex-col items-center justify-between"
+      style={{ height: "calc(100vh - 64px - 2rem)" }}
+    >
       <div className="flex flex-col w-2/3 gap-8 overflow-y-auto justify-between flex-1">
         <div className="h-4"></div>
         <div className="flex flex-col gap-8 flex-1">
