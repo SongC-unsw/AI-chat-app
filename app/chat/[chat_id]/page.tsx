@@ -18,6 +18,12 @@ export default function Page() {
       });
     },
   });
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
   // get the messages from the database
   const { data: previousMessages } = useQuery({
     queryKey: ["messages", chat_id],
@@ -106,6 +112,7 @@ export default function Page() {
             placeholder="请输入问题"
             value={input}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
           ></textarea>
           {/* Model selection */}
           <div className="flex items-center justify-between w-full h-12 mb-2">
