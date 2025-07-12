@@ -76,7 +76,7 @@ export default function Page() {
 
   useEffect(() => {
     handleFirstMessage();
-  }, [chat?.data?.chat?.title, previousMessages]);
+  }, [chat?.data?.chat?.title, previousMessages, handleFirstMessage]);
 
   return (
     <div className="flex flex-col items-center h-screen justify-between">

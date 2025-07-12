@@ -1,5 +1,5 @@
 "use client";
-import { getChats } from "@/db";
+
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";

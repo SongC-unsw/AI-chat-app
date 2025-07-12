@@ -6,7 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
-const page = () => {
+const Page = () => {
   const [input, setInput] = useState("");
   const [model, setModel] = useState("deepseek-v3");
   const router = useRouter();
@@ -86,4 +86,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -11,7 +11,7 @@ const deepseek = createDeepSeek({
 });
 
 export async function POST(req: Request) {
-  const { messages, model, chat_id, chat_user_id } = await req.json();
+  const { messages, chat_id, chat_user_id } = await req.json();
 
   // store the messages in the database
   const { userId } = await auth();
