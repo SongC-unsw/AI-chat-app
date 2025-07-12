@@ -3,8 +3,8 @@ import { integer, pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
 export const chatsTable = pgTable("chats", {
   id: serial("id").primaryKey(),
   userId: text("user_id").notNull(),
-  title: text("title").notNull(),
   model: text("model").notNull(),
+  title: text("title").notNull(),
 });
 
 export const messagesTable = pgTable("messages", {

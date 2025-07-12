@@ -25,6 +25,7 @@ const page = () => {
     onSuccess: (response) => {
       router.push(`/chat/${response.data.id}`);
       queryClient.invalidateQueries({ queryKey: ["chats"] });
+      setInput("");
     },
   });
 
@@ -37,7 +38,6 @@ const page = () => {
       return;
     }
     createChat();
-    setInput("");
   };
   return (
     <div className="flex flex-col items-center min-h-screen">
