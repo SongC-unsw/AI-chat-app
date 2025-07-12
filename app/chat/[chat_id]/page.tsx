@@ -127,8 +127,9 @@ export default function Page() {
                       li: ({ children }) => (
                         <li className="mb-1">{children}</li>
                       ),
-                      code: ({ inline, children, ...props }) =>
-                        inline ? (
+                      code: ({ children, className, ...props }: any) => {
+                        const isInline = !className?.includes("language-");
+                        return isInline ? (
                           <code
                             className="bg-gray-200 text-gray-800 px-1 py-0.5 rounded text-sm"
                             {...props}
@@ -142,7 +143,8 @@ export default function Page() {
                           >
                             {children}
                           </code>
-                        ),
+                        );
+                      },
                       pre: ({ children }) => (
                         <pre className="mb-2">{children}</pre>
                       ),
