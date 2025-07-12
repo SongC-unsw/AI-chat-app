@@ -127,7 +127,15 @@ export default function Page() {
                       li: ({ children }) => (
                         <li className="mb-1">{children}</li>
                       ),
-                      code: ({ children, className, ...props }: any) => {
+                      code: ({
+                        children,
+                        className,
+                        ...props
+                      }: {
+                        children?: React.ReactNode;
+                        className?: string;
+                        [key: string]: unknown;
+                      }) => {
                         const isInline = !className?.includes("language-");
                         return isInline ? (
                           <code
