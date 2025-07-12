@@ -11,6 +11,12 @@ const page = () => {
   const [model, setModel] = useState("deepseek-v3");
   const router = useRouter();
   const { user } = useUser();
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
   const handleModelChange = () => {
     setModel(model === "deepseek-v3" ? "deepseek-r1" : "deepseek-v3");
   };
@@ -50,6 +56,7 @@ const page = () => {
             placeholder="请输入问题"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
           ></textarea>
           {/* Model selection */}
           <div className="flex items-center justify-between w-full h-12 mb-2">
