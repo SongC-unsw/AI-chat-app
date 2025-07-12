@@ -6,6 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
+
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 
 export default function Page() {
   const [model, setModel] = useState("deepseek-v3");
@@ -94,7 +98,80 @@ export default function Page() {
                   message?.role === "assistant" ? "bg-blue-400" : "bg-slate-100"
                 }`}
               >
-                {message?.content}
+                <div className="p-2">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeHighlight]}
+                    // className="markdown-content"
+                    components={{
+                      // 自定义组件样式
+                      h1: ({ children }) => (
+                        <h1 className="text-2xl font-bold mb-2">{children}</h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 className="text-xl font-bold mb-2">{children}</h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 className="text-lg font-bold mb-1">{children}</h3>
+                      ),
+                      p: ({ children }) => <p className="mb-2">{children}</p>,
+                      ul: ({ children }) => (
+                        <ul className="list-disc list-inside mb-2">
+                          {children}
+                        </ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="list-decimal list-inside mb-2">
+                          {children}
+                        </ol>
+                      ),
+                      li: ({ children }) => (
+                        <li className="mb-1">{children}</li>
+                      ),
+                      code: ({ inline, children, ...props }) =>
+                        inline ? (
+                          <code
+                            className="bg-gray-200 text-gray-800 px-1 py-0.5 rounded text-sm"
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        ) : (
+                          <code
+                            className="block bg-gray-800 text-white p-3 rounded-lg overflow-x-auto"
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        ),
+                      pre: ({ children }) => (
+                        <pre className="mb-2">{children}</pre>
+                      ),
+                      blockquote: ({ children }) => (
+                        <blockquote className="border-l-4 border-gray-300 pl-4 italic mb-2">
+                          {children}
+                        </blockquote>
+                      ),
+                      table: ({ children }) => (
+                        <table className="border-collapse border border-gray-300 mb-2">
+                          {children}
+                        </table>
+                      ),
+                      th: ({ children }) => (
+                        <th className="border border-gray-300 px-2 py-1 bg-gray-100 font-bold">
+                          {children}
+                        </th>
+                      ),
+                      td: ({ children }) => (
+                        <td className="border border-gray-300 px-2 py-1">
+                          {children}
+                        </td>
+                      ),
+                    }}
+                  >
+                    {message?.content}
+                  </ReactMarkdown>
+                </div>
               </div>
             </div>
           ))}
