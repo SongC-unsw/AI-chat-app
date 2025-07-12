@@ -2,7 +2,7 @@
 
 import { SendIcon } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -57,7 +57,7 @@ export default function Page() {
     endRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleFirstMessage = async () => {
+  const handleFirstMessage = useCallback(async () => {
     if (
       chat?.data?.chat?.title &&
       previousMessages?.data?.messages.length === 0
@@ -65,18 +65,17 @@ export default function Page() {
       await append({
         role: "user",
         content: chat?.data?.chat?.title,
-      }),
-        {
-          model: model,
-          chat_id: chat_id,
-          chat_user_id: chat?.data?.chat?.userId,
-        };
+      });
     }
-  };
+  }, [
+    chat?.data?.chat?.title,
+    previousMessages?.data?.messages.length,
+    append,
+  ]);
 
   useEffect(() => {
     handleFirstMessage();
-  }, [chat?.data?.chat?.title, previousMessages, handleFirstMessage]);
+  }, [handleFirstMessage]);
 
   return (
     <div className="flex flex-col items-center h-screen justify-between">
